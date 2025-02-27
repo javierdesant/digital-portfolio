@@ -1,0 +1,3 @@
+type ReactIcon = {
+  className?: string;
+};

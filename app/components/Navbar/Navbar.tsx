@@ -1,40 +1,21 @@
-import React, { useState } from "react";
-import routes from "~/routes";
-import NavbarBranding from "~/components/Navbar/NavbarBranding";
-import MobileMenuToggle from "~/components/Navbar/MobileMenuToggle";
-import Menu from "~/components/Navbar/Menu";
+import React from "react";
+import { Dropdown, NavbarTitle, Menu, KofiButton } from "~/components/Navbar";
 
-function Navbar() {
-  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-  const toggleDropdown = (key: number) =>
-    setOpenDropdown((prev) => (prev === key ? null : key));
-
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-
+const Navbar: React.FC = () => {
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8">
-      <nav className="border-gray-200">
-        <div className="container mx-auto flex flex-wrap items-center justify-between">
-          <NavbarBranding />
-          <MobileMenuToggle
-            isMobileMenuOpen={isMobileMenuOpen}
-            toggleMobileMenu={toggleMobileMenu}
-          />
-          <div
-            className={`hidden w-full md:block md:w-auto ${isMobileMenuOpen ? "block" : "hidden"}`}
-            id="mobile-menu"
-          >
-            <Menu
-              routes={routes}
-              openDropdown={openDropdown}
-              toggleDropdown={toggleDropdown}
-            />
-          </div>
-        </div>
-      </nav>
+    <div className="navbar bg-base-100 shadow-sm">
+      <div className="navbar-start">
+        <Dropdown />
+        <NavbarTitle />
+      </div>
+      <div className="navbar-center hidden lg:flex">
+        <Menu />
+      </div>
+      <div className="navbar-end">
+        <KofiButton />
+      </div>
     </div>
   );
-}
+};
 
 export default Navbar;
