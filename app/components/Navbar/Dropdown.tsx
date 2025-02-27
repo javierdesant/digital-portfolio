@@ -1,5 +1,6 @@
 import React from "react";
 import DropdownIcon from "~/components/Navbar/DropdownIcon";
+import { capitalizeFirstLetter } from "~/utils";
 
 interface DropdownProps {
   isOpen: boolean;
@@ -17,7 +18,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       onClick={toggleDropdown}
       className="flex w-full items-center justify-between border-b border-gray-100 py-2 pr-4 pl-3 font-medium text-gray-700 hover:bg-gray-50 md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
     >
-      {route.path}
+      {capitalizeFirstLetter(route.path)}
       <DropdownIcon className="ml-1 h-4 w-4" />
     </button>
     <div

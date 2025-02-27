@@ -1,9 +1,10 @@
 import React from "react";
 import Dropdown from "./Dropdown";
 import { capitalizeFirstLetter } from "~/utils";
+import type { RouteConfigEntry } from "@react-router/dev/routes";
 
 interface MenuProps {
-  routes: any[]; // Cambiar `any` para el tipo de `routes[]`.
+  routes: (RouteConfigEntry | any)[];
   openDropdown: number | null;
   toggleDropdown: (key: number) => void;
 }
