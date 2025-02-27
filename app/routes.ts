@@ -5,9 +5,7 @@ export default [
 
   route("about", "./routes/about.tsx"),
 
-  route("projects", "./routes/projects.tsx", [
-    index("./routes/projects-home.tsx"),
-  ]),
+  route("projects", "./routes/projects.tsx"),
 
   route("CV", "./routes/cv.tsx", [
     index("./routes/cv-personal.tsx"),
