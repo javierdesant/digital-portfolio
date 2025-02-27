@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import routes from "~/routes";
 
 function Navbar() {
   const [isProjectsDropdownOpen, setIsProjectsDropdownOpen] = useState(false);
@@ -43,63 +44,73 @@ function Navbar() {
               </svg>
             </button>
           </div>
-          <div className="hidden w-full md:block md:w-auto" id="mobile-menu">
+          <div
+            className={`hidden w-full md:block md:w-auto ${isMobileMenuOpen ? "block" : "hidden"}`}
+            id="mobile-menu"
+          >
             <ul className="mt-4 flex flex-col md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium">
-              <li>
-                <a
-                  href="/"
-                  className="block rounded bg-blue-700 py-2 pr-4 pl-3 text-white focus:outline-none md:bg-transparent md:p-0 md:text-blue-700"
-                  aria-current="page"
-                >
-                  Home
-                </a>
-              </li>
-              <li className="relative">
-                <button
-                  onClick={toggleProjectsDropdown}
-                  className="flex w-full items-center justify-between border-b border-gray-100 py-2 pr-4 pl-3 font-medium text-gray-700 hover:bg-gray-50 md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
-                >
-                  Projects
-                  <svg
-                    className="ml-1 h-4 w-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                </button>
-                {/* Menú desplegable */}
-                <div
-                  id="projectsDropdownNavbar"
-                  className={`z-10 my-4 ${
-                    isProjectsDropdownOpen ? "block" : "hidden"
-                  } absolute w-44 list-none divide-y divide-gray-100 rounded bg-white text-base shadow`}
-                >
-                  <ul className="py-1">
-                    <li>
-                      <a
-                        href="/projects/p1"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              {/* Generación dinámica de rutas */}
+              {routes.map((route, index) => (
+                <li key={index} className="relative">
+                  {/* Manejo de menús desplegables para rutas con hijos */}
+                  {route.children?.length ? (
+                    <>
+                      <button
+                        onClick={toggleProjectsDropdown}
+                        className="flex w-full items-center justify-between border-b border-gray-100 py-2 pr-4 pl-3 font-medium text-gray-700 hover:bg-gray-50 md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
                       >
-                        Project 1
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/projects/p2"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        {route.path ?? "Root"}
+                        <svg
+                          className="ml-1 h-4 w-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
+                      {/* Menú desplegable */}
+                      <div
+                        className={`z-10 my-4 ${
+                          isProjectsDropdownOpen ? "block" : "hidden"
+                        } absolute w-44 list-none divide-y divide-gray-100 rounded bg-white text-base shadow`}
                       >
-                        Project 2
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
+                        <ul className="py-1">
+                          {route.children.map((subRoute, subIndex) => (
+                            <li key={subIndex}>
+                              <a
+                                href={
+                                  subRoute.path
+                                    ? `/${route.path}/${subRoute.path}`
+                                    : `/${route.path}`
+                                }
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                {subRoute.path ?? "SubRoot"}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </>
+                  ) : (
+                    <a
+                      href={`/${route.path || ""}`}
+                      className="block rounded bg-blue-700 py-2 pr-4 pl-3 text-white focus:outline-none md:bg-transparent md:p-0 md:text-gray-700 md:hover:text-blue-700"
+                      aria-current="page"
+                    >
+                      {route.path
+                        ? route.path.charAt(0).toUpperCase() +
+                          route.path.slice(1)
+                        : "Home"}
+                    </a>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
