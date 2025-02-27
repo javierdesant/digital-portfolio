@@ -9,7 +9,7 @@ export default [
     index("./routes/projects-home.tsx"),
   ]),
 
-  route("cv", "./routes/cv.tsx", [
+  route("CV", "./routes/cv.tsx", [
     index("./routes/cv-personal.tsx"),
     route("upm", "./routes/cv-upm.tsx"),
   ]),
