@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import routes from "~/routes";
+import { capitalizeFirstLetter } from "~/utils";
 
 function Navbar() {
-  const [isProjectsDropdownOpen, setIsProjectsDropdownOpen] = useState(false);
-  const toggleProjectsDropdown = () => {
-    setIsProjectsDropdownOpen(!isProjectsDropdownOpen);
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+  const toggleDropdown = (key: number) => {
+    setOpenDropdown((prev) => (prev === key ? null : key)); // Cierra si ya está abierto
   };
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -49,17 +50,15 @@ function Navbar() {
             id="mobile-menu"
           >
             <ul className="mt-4 flex flex-col md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium">
-              {/* Generación dinámica de rutas */}
               {routes.map((route, index) => (
                 <li key={index} className="relative">
-                  {/* Manejo de menús desplegables para rutas con hijos */}
                   {route.children?.length ? (
                     <>
                       <button
-                        onClick={toggleProjectsDropdown}
+                        onClick={() => toggleDropdown(index)}
                         className="flex w-full items-center justify-between border-b border-gray-100 py-2 pr-4 pl-3 font-medium text-gray-700 hover:bg-gray-50 md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
                       >
-                        {route.path ?? "Root"}
+                        {capitalizeFirstLetter(route.path || "home")}
                         <svg
                           className="ml-1 h-4 w-4"
                           fill="currentColor"
@@ -73,11 +72,11 @@ function Navbar() {
                           ></path>
                         </svg>
                       </button>
-                      {/* Menú desplegable */}
+                      {/* Dropdown */}
                       <div
-                        className={`z-10 my-4 ${
-                          isProjectsDropdownOpen ? "block" : "hidden"
-                        } absolute w-44 list-none divide-y divide-gray-100 rounded bg-white text-base shadow`}
+                        className={`${
+                          openDropdown === index ? "block" : "hidden"
+                        } absolute z-10 my-4 w-44 list-none divide-y divide-gray-100 rounded bg-white text-base shadow`}
                       >
                         <ul className="py-1">
                           {route.children.map((subRoute, subIndex) => (
@@ -99,14 +98,10 @@ function Navbar() {
                     </>
                   ) : (
                     <a
-                      href={`/${route.path || ""}`}
-                      className="block rounded bg-blue-700 py-2 pr-4 pl-3 text-white focus:outline-none md:bg-transparent md:p-0 md:text-gray-700 md:hover:text-blue-700"
-                      aria-current="page"
+                      href={route.path || "/"}
+                      className="block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
                     >
-                      {route.path
-                        ? route.path.charAt(0).toUpperCase() +
-                          route.path.slice(1)
-                        : "Home"}
+                      {capitalizeFirstLetter(route.path || "home")}
                     </a>
                   )}
                 </li>
